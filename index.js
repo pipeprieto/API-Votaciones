@@ -13,6 +13,9 @@ mongoose
 
 //Epecificando las rutas
 app.use("/", rutas);
+app.use("/votar", rutas);
+app.use("/registro", rutas);
+app.use("/votado", rutas);
 
 //Levantando el servidor
 app.listen(port, () => {
