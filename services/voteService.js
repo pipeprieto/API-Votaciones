@@ -1,11 +1,9 @@
-const mongoose = require("mongoose");
 const User = require("../models/Usuario");
 const Candidato = require("../models/Candidato");
 
-const getUser = (id) => {
+const getUser = () => {
   try {
-    const user = User.findOne({ _id: id });
-    console.log(user);
+    const user = User.find();
     return user;
   } catch (e) {
     console.log("Error", e);
@@ -38,7 +36,6 @@ const createUser = (body) => {
   }
 };
 const updateCandidato = (body, id) => {
-  const id = id;
   try {
     Candidato.findByIdAndUpdate(id, body, { useFindAndModify: false });
     return { updated: true };

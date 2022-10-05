@@ -1,11 +1,13 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const app = express();
 const rutas = require("./Routes/Rutas");
 
 require("dotenv").config;
-const port = process.env.PORT || 4000;
+
+const port = process.env.PORT || 3002;
 //Conexión a la BD
-const url = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.yudwx.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
+const url = `mongodb+srv://votacion:uRP5IHNZI7fiXlcV@cluster0.yudwx.mongodb.net/VotingSystem?retryWrites=true&w=majority`;
 mongoose
   .connect(url)
   .then(() => console.log("Base de datos conectada correctamete"))
@@ -19,5 +21,5 @@ app.use("/votado", rutas);
 
 //Levantando el servidor
 app.listen(port, () => {
-  console.log("Escuchando en el puerto 4000");
+  console.log(`Escuchando en el puerto ${port}`);
 });

@@ -1,8 +1,8 @@
 const service = require("../services/voteService");
 
 const getUser = async (req, res) => {
-  const user = await service.getUser(req.params.id);
-  res.json(user);
+  const user = await service.getUser();
+  res.send(user);
 };
 const getCandidatos = async (req, res) => {
   const candidatos = await service.getCandidatos();
@@ -15,8 +15,11 @@ const createUser = async (req, res) => {
   } else {
   }
 };
-const updateCandidato = (req, res) => {
-  res.send("Actualizando candidato");
+const updateCandidato = async (req, res) => {
+  const body = req.params.body;
+  const id = req.params.body.id;
+  const updated = await service.updateCandidato(body, id);
+  res.json(updated);
 };
 module.exports = {
   getUser,
