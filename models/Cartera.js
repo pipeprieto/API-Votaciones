@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const Cartera = new Schema({
-  hash: String
+  hash: {type: String,required:true}
 });
 
 const Carteras = mongoose.model("Cartera", Cartera);

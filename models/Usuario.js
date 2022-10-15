@@ -6,7 +6,7 @@ const Usuario = new Schema(
   {
     tel: { type: String },
     correo: { type: String, required: true },
-    hadRegistered: { type: Boolean },
+    hadRegistered: { type: Boolean, default:false },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );

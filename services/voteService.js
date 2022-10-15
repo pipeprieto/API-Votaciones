@@ -3,9 +3,10 @@ const Candidato = require("../models/Candidato");
 const Carteras = require("../models/Cartera");
 
 const getUser = (_id) => {
-  let id = _id
+  let id = _id;
   try {
-    const user = User.findById(id);
+    const user = User.find();
+    console.log(user);
     return user;
   } catch (e) {
     console.log("Error", e);
@@ -22,11 +23,11 @@ const getCandidatos = () => {
     return e;
   }
 };
-const updateUser = (id,body) => {
-  try{
-    User.findByIdAndUpdate(id,body, {useFindAndModify:false});
-    return {updated:true};
-  }catch(e){
+const updateUser = (id, body) => {
+  try {
+    User.findByIdAndUpdate(id, body, { useFindAndModify: false });
+    return { updated: true };
+  } catch (e) {
     return e;
   }
 };
@@ -40,15 +41,21 @@ const updateCandidato = (body, id) => {
   }
 };
 
-const getCartera = ()=>{
-  try{
-   const carteras = Carteras.find();
-   console.log(carteras);
-   return carteras;
-  }catch(e){
-    console.log(e)
+const getCartera = () => {
+  try {
+    const carteras = Carteras.find();
+    console.log(carteras);
+    return carteras;
+  } catch (e) {
+    console.log(e);
     return e;
   }
-}
+};
 
-module.exports = { getUser, getCandidatos, updateCandidato,getCartera,updateUser };
+module.exports = {
+  getUser,
+  getCandidatos,
+  updateCandidato,
+  getCartera,
+  updateUser,
+};

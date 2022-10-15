@@ -3,7 +3,7 @@ const rutas = express.Router();
 const controlador = require("../conrollers/voteController");
 
 rutas
-  .get("/registrados:id", controlador.getUser)
+  .get("/registrados", controlador.getUser)
   .get("/cartera", controlador.getCarteras)
   .get("/candidatos", controlador.getCandidatos)
   .patch("/updateUser:id", controlador.updateUser)
