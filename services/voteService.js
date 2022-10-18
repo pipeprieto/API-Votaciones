@@ -16,6 +16,19 @@ const createUser = (body) => {
     return e;
   }
 };
+const createCartera = (body) => {
+  try {
+    const existsCartera = Carteras.findOne({ hash: body.hash });
+    if (existsCartera !== null) {
+      return { mensaje: "El usuario ya existe", success: false };
+    } else {
+      Carteras.create(body);
+      return { mensaje: "Usuario creado exitosamente", success: true };
+    }
+  } catch (e) {
+    return e;
+  }
+};
 const getCandidatos = () => {
   try {
     const candidatos = Candidato.find();

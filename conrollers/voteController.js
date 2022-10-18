@@ -13,6 +13,11 @@ const registerUser = async (req, res) => {
   const respuesta = await service.createUser(body);
   res.send(respuesta);
 };
+const createCartera = async(req,res)=>{
+  const body = req.params.body;
+  const respuesta = await service.createCartera(body);
+  res.send(respuesta)
+};
 const getCandidatos = async (req, res) => {
   const candidatos = await service.getCandidatos();
   res.send(candidatos);
@@ -65,6 +70,7 @@ const mail = async (correo) => {
 module.exports = {
   verify,
   registerUser,
+  createCartera,
   getCandidatos,
   updateUser,
   getCarteras,
