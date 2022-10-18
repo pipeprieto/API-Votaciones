@@ -2,24 +2,25 @@ const User = require("../models/Usuario");
 const Candidato = require("../models/Candidato");
 const Carteras = require("../models/Cartera");
 
-const getUser = (_id) => {
-  let id = _id;
+const createUser = (body) => {
+  let {correo} = body ;
   try {
-    const user = User.find();
-    console.log(user);
-    return user;
+    const existsUser = User.findOne({correo:correo});
+    if (existsUser !==null) {
+      return {mensaje:"El usuario ya existe",success:false}
+    }else{
+      User.create(body);
+      return {mensaje:"Usuario creado exitosamente",success:true};
+    }
   } catch (e) {
-    console.log("Error", e);
     return e;
   }
 };
 const getCandidatos = () => {
   try {
     const candidatos = Candidato.find();
-    console.log(candidatos);
     return candidatos;
   } catch (e) {
-    console.log("Error", e);
     return e;
   }
 };
@@ -36,7 +37,6 @@ const updateCandidato = (body, id) => {
     Candidato.findByIdAndUpdate(id, body, { useFindAndModify: false });
     return { updated: true };
   } catch (e) {
-    console.log("Error", e);
     return e;
   }
 };
@@ -44,16 +44,14 @@ const updateCandidato = (body, id) => {
 const getCartera = () => {
   try {
     const carteras = Carteras.find();
-    console.log(carteras);
     return carteras;
   } catch (e) {
-    console.log(e);
     return e;
   }
 };
 
 module.exports = {
-  getUser,
+  createUser,
   getCandidatos,
   updateCandidato,
   getCartera,
