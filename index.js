@@ -22,10 +22,14 @@ mongoose
   .catch((e) => console.log(e));
 
 //Epecificando las rutas
-app.use("/", rutas); //No importa por el momento
-app.use("/votar", rutas); //No importa
-app.use("/registrados", rutas);
-app.use("/votado", rutas); //No importa
+app.use("/", rutas); 
+app.use("/cartera", rutas); 
+app.use("/candidatos", rutas);
+app.use("/verify", rutas); 
+app.use("/registrar", rutas); 
+app.use("/crearcartera", rutas); 
+app.use("/updateUser:id", rutas); 
+app.use("/updateCandidato:id", rutas); 
 
 //Levantando el servidor
 app.listen(port, () => {

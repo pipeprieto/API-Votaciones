@@ -1,6 +1,10 @@
 const service = require("../services/voteService");
 const mailer = require("nodemailer");
 let cod = 0;
+
+const init = (req,res)=>{
+res.send('Servidor inicializado correctamente');
+};
 const verify = async (req, res) => {
   //Envia un mensaje con un código al correo especificado
   let code = Math.floor(Math.random() * 1000 + 1000);
@@ -78,6 +82,7 @@ const mail = async (correo, codigo) => {
   return info.response;
 };
 module.exports = {
+  init,
   verify,
   registerUser,
   createCartera,
