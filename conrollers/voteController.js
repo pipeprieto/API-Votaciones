@@ -1,22 +1,33 @@
 const service = require("../services/voteService");
 const mailer = require("nodemailer");
-
-const verify = async(req,res)=>{
-  const body = req.params.body;
-  const {correo} = body
-  const message =  await mail(correo);
-  res.send(message);
+let cod = 0;
+const verify = async (req, res) => {
+  //Envia un mensaje con un código al correo especificado
+  let code = Math.floor(Math.random() * 1000 + 1000);
+  cod = code;
+  const body = req.body;
+  const { correo } = body;
+  const message = await mail(correo, code);
+  //Recibe la última respuesta del servidor
+  res.send({mensaje:message});
 };
+
 const registerUser = async (req, res) => {
   //Recibe los datos del usuario
-  const body = req.params.body
-  const respuesta = await service.createUser(body);
-  res.send(respuesta);
+  console.log(cod);
+  const body = req.body;
+  const { codigo } = body[1];
+  if (codigo == cod) {
+    const respuesta = await service.createUser(body[0]);
+    res.send(respuesta);
+  } else {
+    res.send({ mensaje: "El codigo ingresado no es valido" });
+  }
 };
-const createCartera = async(req,res)=>{
-  const body = req.params.body;
+const createCartera = async (req, res) => {
+  const body = req.body;
   const respuesta = await service.createCartera(body);
-  res.send(respuesta)
+  res.send(respuesta);
 };
 const getCandidatos = async (req, res) => {
   const candidatos = await service.getCandidatos();
@@ -24,16 +35,16 @@ const getCandidatos = async (req, res) => {
 };
 const updateUser = async (req, res) => {
   //Recibe el id del usuario dentro del body
-  const body = req.params.body;
+  const body = req.body;
   const id = body.id;
-  const updated = await service.updateUser(id,body);
+  const updated = await service.updateUser(id, body);
   res.send(updated);
 };
 const updateCandidatos = async (req, res) => {
   //Recibe el id del candidato dentro del body
-  const body = req.params.body;
+  const body = req.body;
   const id = body.id;
-  const updated = await service.updateCandidato(id,body);
+  const updated = await service.updateCandidato(id, body);
   res.send(updated);
 };
 const getCarteras = async (req, res) => {
@@ -42,9 +53,9 @@ const getCarteras = async (req, res) => {
   res.send(carteras);
 };
 
-const mail = async (correo) => {
-  //let testaccount = await mailer.createTestAccount();
-  let codigo = (Math.floor(Math.random()*1000 + 1000));
+const mail = async (correo, codigo) => {
+  //Los mensajes de correo permanecen temporalmente en el host especificado
+  //Lo que hay que hacer después es usar OAuth2 para poder enviarlos por gmail
   let transpoter = mailer.createTransport({
     host: "smtp.ethereal.email",
     port: 587,
@@ -64,8 +75,7 @@ const mail = async (correo) => {
     text: "Tu código de verificación es el siguiente", // plain text body
     html: `<p><strong>${codigo}</strong></p>`,
   });
-  console.log(info.response);
- return info.response
+  return info.response;
 };
 module.exports = {
   verify,

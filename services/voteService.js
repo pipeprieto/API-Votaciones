@@ -2,61 +2,62 @@ const User = require("../models/Usuario");
 const Candidato = require("../models/Candidato");
 const Carteras = require("../models/Cartera");
 
-const createUser = (body) => {
-  let {correo} = body ;
+const createUser = async (body) => {
+  let { correo } = body;
   try {
-    const existsUser = User.findOne({correo:correo});
-    if (existsUser !==null) {
-      return {mensaje:"El usuario ya existe",success:false}
-    }else{
-      User.create(body);
-      return {mensaje:"Usuario creado exitosamente",success:true};
-    }
-  } catch (e) {
-    return e;
-  }
-};
-const createCartera = (body) => {
-  try {
-    const existsCartera = Carteras.findOne({ hash: body.hash });
-    if (existsCartera !== null) {
+    const existsUser = (await User.findOne({ correo: correo })) || null;
+    console.log(existsUser);
+    if (existsUser != null) {
       return { mensaje: "El usuario ya existe", success: false };
     } else {
-      Carteras.create(body);
+      await User.create(body);
       return { mensaje: "Usuario creado exitosamente", success: true };
     }
   } catch (e) {
     return e;
   }
 };
-const getCandidatos = () => {
+const createCartera = async (body) => {
   try {
-    const candidatos = Candidato.find();
+    const existsCartera = await Carteras.findOne({ hash: body.hash });
+    if (existsCartera !== null) {
+      return { mensaje: "La cartera ya existe", success: false };
+    } else {
+      await Carteras.create(body);
+      return { mensaje: "Cartera creada exitosamente", success: true };
+    }
+  } catch (e) {
+    return e;
+  }
+};
+const getCandidatos = async () => {
+  try {
+    const candidatos = await Candidato.find();
     return candidatos;
   } catch (e) {
     return e;
   }
 };
-const updateUser = (id, body) => {
+const updateUser = async (id, body) => {
   try {
-    User.findByIdAndUpdate(id, body, { useFindAndModify: false });
+    await User.findByIdAndUpdate(id, body, { useFindAndModify: false });
     return { updated: true };
   } catch (e) {
     return e;
   }
 };
-const updateCandidato = (body, id) => {
+const updateCandidato = async (body, id) => {
   try {
-    Candidato.findByIdAndUpdate(id, body, { useFindAndModify: false });
+    await Candidato.findByIdAndUpdate(id, body, { useFindAndModify: false });
     return { updated: true };
   } catch (e) {
     return e;
   }
 };
 
-const getCartera = () => {
+const getCartera = async () => {
   try {
-    const carteras = Carteras.find();
+    const carteras = await Carteras.find();
     return carteras;
   } catch (e) {
     return e;
@@ -69,4 +70,5 @@ module.exports = {
   updateCandidato,
   getCartera,
   updateUser,
+  createCartera,
 };
