@@ -1,6 +1,6 @@
 const express = require("express");
 const rutas = express.Router();
-const controlador = require("../conrollers/voteController");
+const controlador = require("../conroller/voteController");
 
 rutas
   .get("/cartera", controlador.getCarteras)
