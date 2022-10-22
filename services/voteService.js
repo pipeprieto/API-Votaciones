@@ -38,9 +38,26 @@ const getCandidatos = async () => {
     return e;
   }
 };
-const updateUser = async (id, body) => {
+const getUser= async (correo)=>{
+  const email = correo;
+  try{
+    const exists = await User.findOne({correo:email}) || null;
+    if(exists !== null){
+      return true;
+    }else{
+      return false;
+    }
+  }catch(e){
+    return e;
+  }
+}
+
+const updateUser = async (correo) => {
+  const email = correo;
   try {
-    await User.findByIdAndUpdate(id, body, { useFindAndModify: false });
+    const query = { correo: email };
+    const update = { hadRegistered: true };
+    await User.findOneAndUpdate(query, update);
     return { updated: true };
   } catch (e) {
     return e;
@@ -71,4 +88,5 @@ module.exports = {
   getCartera,
   updateUser,
   createCartera,
+  getUser
 };

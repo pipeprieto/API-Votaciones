@@ -5,6 +5,7 @@ let cod = 0;
 const init = (req,res)=>{
 res.send('Servidor inicializado correctamente');
 };
+
 const verify = async (req, res) => {
   //Envia un mensaje con un código al correo especificado
   let code = Math.floor(Math.random() * 1000 + 1000);
@@ -28,21 +29,31 @@ const registerUser = async (req, res) => {
     res.send({ mensaje: "El codigo ingresado no es valido" });
   }
 };
+
 const createCartera = async (req, res) => {
   const body = req.body;
   const respuesta = await service.createCartera(body);
   res.send(respuesta);
 };
+
 const getCandidatos = async (req, res) => {
   const candidatos = await service.getCandidatos();
   res.send(candidatos);
 };
+
 const updateUser = async (req, res) => {
   //Recibe el id del usuario dentro del body
   const body = req.body;
-  const id = body.id;
-  const updated = await service.updateUser(id, body);
-  res.send(updated);
+  const { correo } = body;
+  const { codigo } = body[1];
+  const existsUser = await service.getUser(correo);
+  if(codigo === cod && existsUser){
+    const updated = await service.updateUser(correo);
+    res.send(updated);
+  }else{
+    res.send({ mensaje: "El codigo ingresado no es valido o el correo ingresado no existe" });
+  }
+  
 };
 const updateCandidatos = async (req, res) => {
   //Recibe el id del candidato dentro del body
