@@ -8,14 +8,24 @@ res.send('Servidor inicializado correctamente');
 
 const verify = async (req, res) => {
   //Envia un mensaje con un código al correo especificado
-  let code = Math.floor(Math.random() * 1000 + 1000);
+  const code = otpGenerator(4);
   cod = code;
+  console.log(cod)
   const body = req.body;
   const { correo } = body;
   const message = await mail(correo, code);
   //Recibe la última respuesta del servidor
   res.send({mensaje:message});
 };
+
+const otpGenerator = (limit)=>{
+  let digits='0123456789';
+  let OTP = '';
+  for (let index = 0; index < limit; index++) {
+    OTP+=digits[Math.floor(Math.random() * 10)]    
+  }
+  return OTP;
+}
 
 const registerUser = async (req, res) => {
   //Recibe los datos del usuario
@@ -44,7 +54,8 @@ const getCandidatos = async (req, res) => {
 const updateUser = async (req, res) => {
   //Recibe el id del usuario dentro del body
   const body = req.body;
-  const { correo } = body;
+  const { correo } = body[0];
+  console.log(correo);
   const { codigo } = body[1];
   const existsUser = await service.getUser(correo);
   if(codigo === cod && existsUser){
