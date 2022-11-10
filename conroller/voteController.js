@@ -55,7 +55,6 @@ const updateUser = async (req, res) => {
   //Recibe el id del usuario dentro del body
   const body = req.body;
   const { correo } = body[0];
-  console.log(correo);
   const { codigo } = body[1];
   const existsUser = await service.getUser(correo);
   if(codigo === cod && existsUser){
@@ -83,19 +82,20 @@ const mail = async (correo, codigo) => {
   //Los mensajes de correo permanecen temporalmente en el host especificado
   //Lo que hay que hacer después es usar OAuth2 para poder enviarlos por gmail
   let transpoter = mailer.createTransport({
-    host: "smtp.ethereal.email",
+    service:"gmail",
+    host: "smtp.gmail.com",
     port: 587,
     secure: false,
-    tls: {
-      rejectUnauthorized: false,
-    },
+    // tls: {
+    //   rejectUnauthorized: false,
+    // },
     auth: {
-      user: "jayce.sauer@ethereal.email",
-      pass: "BfGDh3exJYjUjQ9PP2",
+      user: process.env.EMAIL,
+      pass: process.env.EMAIL_DVPASS,
     },
   });
   let info = await transpoter.sendMail({
-    from: `<votesystemun@example.com>`, // sender address
+    from: process.env.EMAIL, // sender address
     to: `${correo}`, // list of receivers
     subject: "verifircación y Registro", // Subject line
     text: "Tu código de verificación es el siguiente", // plain text body
