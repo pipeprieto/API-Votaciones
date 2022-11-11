@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const Usuario = new Schema(
   {
-    tel: { type: String },
+    pass:{type:String,required:true},
     correo: { type: String, required: true },
     hadRegistered: { type: Boolean, default:false },
   },

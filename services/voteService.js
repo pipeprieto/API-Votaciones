@@ -43,7 +43,7 @@ const getUser= async (correo)=>{
   try{
     const exists = await User.findOne({correo:email}) || null;
     if(exists !== null){
-      return true;
+      return exists;
     }else{
       return false;
     }

@@ -1,31 +1,31 @@
 const service = require("../services/voteService");
-const mailer = require("nodemailer");
-let cod = 0;
+const {tokenSign} = require("../helpers/generateToken")
 
 const init = (req,res)=>{
 res.send('Servidor inicializado correctamente');
 };
 
-const verify = async (req, res) => {
+const login = async (req, res) => {
   //Envia un mensaje con un código al correo especificado
-  const code = otpGenerator(4);
-  cod = code;
-  console.log(cod)
-  const body = req.body;
-  const { correo } = body;
-  const message = await mail(correo, code);
-  //Recibe la última respuesta del servidor
-  res.send({mensaje:message});
+  const { correo, pass } = req.body;
+  try {
+    const exists = await service.getUser(correo);
+    const {hadRegistered} = exists;
+  
+    if (exists === false) {
+      res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    if (exists.pass !== pass) {
+      res.status(404).json({ message: "Contraseña incorrecta" });
+    } else {
+      const tokenSession = await tokenSign(exists);
+      res.json({ hadRegistered, tokenSession });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-const otpGenerator = (limit)=>{
-  let digits='0123456789';
-  let OTP = '';
-  for (let index = 0; index < limit; index++) {
-    OTP+=digits[Math.floor(Math.random() * 10)]    
-  }
-  return OTP;
-}
 
 const registerUser = async (req, res) => {
   //Recibe los datos del usuario
@@ -78,34 +78,10 @@ const getCarteras = async (req, res) => {
   res.send(carteras);
 };
 
-const mail = async (correo, codigo) => {
-  //Los mensajes de correo permanecen temporalmente en el host especificado
-  //Lo que hay que hacer después es usar OAuth2 para poder enviarlos por gmail
-  let transpoter = mailer.createTransport({
-    service:"gmail",
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    // tls: {
-    //   rejectUnauthorized: false,
-    // },
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_DVPASS,
-    },
-  });
-  let info = await transpoter.sendMail({
-    from: process.env.EMAIL, // sender address
-    to: `${correo}`, // list of receivers
-    subject: "verifircación y Registro", // Subject line
-    text: "Tu código de verificación es el siguiente", // plain text body
-    html: `<p><strong>${codigo}</strong></p>`,
-  });
-  return info.response;
-};
+
 module.exports = {
   init,
-  verify,
+  login,
   registerUser,
   createCartera,
   getCandidatos,

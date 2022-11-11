@@ -6,7 +6,7 @@ rutas
   .get('/',controlador.init)
   .get("/cartera", controlador.getCarteras)
   .get("/candidatos", controlador.getCandidatos)
-  .post("/verify",controlador.verify)
+  .post("/login",controlador.login)
   .post("/registrar", controlador.registerUser)
   .post("/crearcartera",controlador.createCartera)
   .patch("/updateUser:id", controlador.updateUser)
