@@ -21,6 +21,7 @@ const login = async (req, res) => {
       const tokenSession = await tokenSign(exists);
       res.json({ hadRegistered, tokenSession });
     }
+    return
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
