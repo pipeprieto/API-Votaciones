@@ -7,9 +7,8 @@ rutas
   .get("/cartera", controlador.getCarteras)
   .get("/candidatos", controlador.getCandidatos)
   .post("/login",controlador.login)
-  .post("/registrar", controlador.registerUser)
   .post("/crearcartera",controlador.createCartera)
-  .patch("/updateUser:id", controlador.updateUser)
+  .patch("/updateUser", controlador.updateUser)
   .patch("/updateCandidato:id", controlador.updateCandidatos);
 
 module.exports = rutas;

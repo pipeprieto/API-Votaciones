@@ -55,14 +55,13 @@ const getCandidatos = async (req, res) => {
 const updateUser = async (req, res) => {
   //Recibe el id del usuario dentro del body
   const body = req.body;
-  const { correo } = body[0];
-  const { codigo } = body[1];
+  const { correo } = body;
   const existsUser = await service.getUser(correo);
-  if(codigo === cod && existsUser){
+  if(existsUser){
     const updated = await service.updateUser(correo);
     res.send(updated);
   }else{
-    res.send({ mensaje: "El codigo ingresado no es valido o el correo ingresado no existe" });
+    res.send({ mensaje: "El correo ingresado no existe" });
   }
   
 };
