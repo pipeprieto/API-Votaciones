@@ -13,15 +13,15 @@ const login = async (req, res) => {
     const {hadRegistered} = exists;
   
     if (exists === false) {
-      res.status(404).json({ message: "Usuario no encontrado" });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
     if (exists.pass !== pass) {
-      res.status(404).json({ message: "Contraseña incorrecta" });
+      return res.status(404).json({ message: "Contraseña incorrecta" });
     } else {
       const tokenSession = await tokenSign(exists);
-      res.json({ hadRegistered, tokenSession });
+      return res.json({ hadRegistered, tokenSession });
     }
-    return
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
