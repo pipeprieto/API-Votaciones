@@ -57,6 +57,4 @@ rutas.post("/crearcartera",controlador.createCartera)
 rutas.patch("/updateUser", controlador.updateUser)
 
 
-rutas.patch("/updateCandidato:id", controlador.updateCandidatos);
-
 module.exports = rutas;

@@ -28,64 +28,77 @@ const login = async (req, res) => {
 };
 
 
-const registerUser = async (req, res) => {
-  //Recibe los datos del usuario
-  console.log(cod);
-  const body = req.body;
-  const { codigo } = body[1];
-  if (codigo == cod) {
-    const respuesta = await service.createUser(body[0]);
-    res.send(respuesta);
-  } else {
-    res.send({ mensaje: "El codigo ingresado no es valido" });
-  }
-};
+// const registerUser = async (req, res) => {
+//   //Recibe los datos del usuario
+//   console.log(cod);
+//   const body = req.body;
+//   const { codigo } = body[1];
+//   if (codigo == cod) {
+//     const respuesta = await service.createUser(body[0]);
+//     res.send(respuesta);
+//   } else {
+//     res.send({ mensaje: "El codigo ingresado no es valido" });
+//   }
+// };
 
 const createCartera = async (req, res) => {
   const body = req.body;
-  const respuesta = await service.createCartera(body);
-  res.send(respuesta);
+  try {
+    const respuesta = await service.createCartera(body);
+    res.json(respuesta);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+  
 };
 
 const getCandidatos = async (req, res) => {
   const candidatos = await service.getCandidatos();
-  res.send(candidatos);
+  res.json(candidatos);
 };
 
 const updateUser = async (req, res) => {
   //Recibe el id del usuario dentro del body
   const body = req.body;
   const { correo } = body;
-  const existsUser = await service.getUser(correo);
-  if(existsUser){
-    const updated = await service.updateUser(correo);
-    res.send(updated);
-  }else{
-    res.send({ mensaje: "El correo ingresado no existe" });
+  try {
+    const existsUser = await service.getUser(correo);
+    if (existsUser) {
+      const updated = await service.updateUser(correo);
+      res.json(updated);
+    } else {
+      res.status(404).json({ mensaje: "El correo ingresado no existe" });
+    }
+  } catch (error) {
+    res.status(500).json({message:error.message});
   }
   
+  
 };
-const updateCandidatos = async (req, res) => {
-  //Recibe el id del candidato dentro del body
-  const body = req.body;
-  const id = body.id;
-  const updated = await service.updateCandidato(id, body);
-  res.send(updated);
-};
+// const updateCandidatos = async (req, res) => {
+//   //Recibe el id del candidato dentro del body
+//   const body = req.body;
+//   const id = body.id;
+//   const updated = await service.updateCandidato(id, body);
+//   res.send(updated);
+// };
 const getCarteras = async (req, res) => {
   //Obtiene las carteras guardadas en base de datos
-  const carteras = await service.getCartera();
-  res.send(carteras);
+  try {
+    const carteras = await service.getCartera();
+    res.json(carteras);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+  
 };
 
 
 module.exports = {
   init,
   login,
-  registerUser,
   createCartera,
   getCandidatos,
   updateUser,
   getCarteras,
-  updateCandidatos,
 };
