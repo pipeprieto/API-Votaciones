@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const cors = require('cors');
 const app = express();
 const {swaggerDocs:V1SWDocs} = require('./Routes/swagger');
 const rutas = require("./Routes/Rutas");
@@ -12,6 +13,7 @@ const port = process.env.PORT || 3002;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("tiny"));
+app.use(cors())
 
 //Conexión a la BD
 mongoose
