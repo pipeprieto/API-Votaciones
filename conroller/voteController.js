@@ -27,20 +27,6 @@ const login = async (req, res) => {
   }
 };
 
-
-// const registerUser = async (req, res) => {
-//   //Recibe los datos del usuario
-//   console.log(cod);
-//   const body = req.body;
-//   const { codigo } = body[1];
-//   if (codigo == cod) {
-//     const respuesta = await service.createUser(body[0]);
-//     res.send(respuesta);
-//   } else {
-//     res.send({ mensaje: "El codigo ingresado no es valido" });
-//   }
-// };
-
 const createCartera = async (req, res) => {
   const body = req.body;
   try {
@@ -75,13 +61,7 @@ const updateUser = async (req, res) => {
   
   
 };
-// const updateCandidatos = async (req, res) => {
-//   //Recibe el id del candidato dentro del body
-//   const body = req.body;
-//   const id = body.id;
-//   const updated = await service.updateCandidato(id, body);
-//   res.send(updated);
-// };
+
 const getCarteras = async (req, res) => {
   //Obtiene las carteras guardadas en base de datos
   try {
